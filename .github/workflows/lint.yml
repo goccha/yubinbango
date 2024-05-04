@@ -1,4 +1,4 @@
-name: Run Test
+name: Run Lint
 
 on:
   push:
@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  go-test:
+  lint:
 
     runs-on: ubuntu-latest
     timeout-minutes: 300
