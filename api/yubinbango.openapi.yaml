@@ -1,0 +1,271 @@
+openapi: 3.0.1
+info:
+  title: 郵便番号API
+  description: ''
+  version: 0.0.1
+tags: []
+paths:
+  /api/yubinbango/{zip}.json:
+    get:
+      summary: 住所取得(JSON形式)
+      deprecated: false
+      description: ''
+      operationId: get-api-yubinbango-json
+      tags: []
+      parameters:
+        - name: zip
+          in: path
+          description: 取得したい郵便番号と拡張子を指定する
+          required: true
+          example: '1000001'
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: jsonp形式でレスポンスを受けるためのコールバック関数名
+          required: false
+          example: $yubin
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  zip_code:
+                    type: string
+                    description: 郵便番号
+                  prefecture:
+                    type: string
+                    description: 都道府県
+                  prefecture_kana:
+                    type: string
+                    description: 都道府県（カナ）
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        city:
+                          type: string
+                          description: 市区町村
+                        city_kana:
+                          type: string
+                          description: 市区町村（カナ）
+                        town:
+                          type: string
+                          description: 地域
+                        town_kana:
+                          type: string
+                          description: 地域（カナ）
+                        street:
+                          type: string
+                          description: 通り
+                        street_kana:
+                          type: string
+                          description: 通り（カナ）
+                        address:
+                          type: string
+                          description: 建物名等
+                        address_kana:
+                          type: string
+                          description: 建物名等（カナ）
+                        office_name:
+                          type: string
+                          description: 事業所名
+                        office_name_kana:
+                          type: string
+                          description: 事業所名（カナ）
+                      required:
+                        - city
+                        - city_kana
+                    description: 住所リスト
+                required:
+                  - zip_code
+                  - prefecture
+                  - prefecture_kana
+                  - addresses
+      security:
+        - basic: []
+  /api/yubinbango/jsonp/{zip}.json:
+    get:
+      summary: 住所取得(JSONP[json]形式)
+      deprecated: false
+      description: $yubin({json形式})でレスポンスを返す
+      operationId: get-api-yubinbango-jsonp
+      tags: []
+      parameters:
+        - name: zip
+          in: path
+          description: 取得したい郵便番号と拡張子を指定する
+          required: true
+          example: '1000001'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  zip_code:
+                    type: string
+                    description: 郵便番号
+                  prefecture:
+                    type: string
+                    description: 都道府県
+                  prefecture_kana:
+                    type: string
+                    description: 都道府県（カナ）
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        city:
+                          type: string
+                          description: 市区
+                        city_kana:
+                          type: string
+                          description: 市区（カナ）
+                        town:
+                          type: string
+                          description: 町村
+                        town_kana:
+                          type: string
+                          description: 町村（カナ）
+                        street:
+                          type: string
+                          description: 通り
+                        street_kana:
+                          type: string
+                          description: 通り（カナ）
+                        address:
+                          type: string
+                          description: 建物名等
+                        address_kana:
+                          type: string
+                          description: 建物名等（カナ）
+                        office_name:
+                          type: string
+                          description: 事業所名
+                        office_name_kana:
+                          type: string
+                          description: 事業所名（カナ）
+                      required:
+                        - city
+                        - city_kana
+                    description: 住所リスト
+                required:
+                  - zip_code
+                  - prefecture
+                  - prefecture_kana
+                  - addresses
+              examples:
+                '1':
+                  summary: application/javascript
+                  value: >-
+                    $yubin({"addresses":[{"city":"千代田区","city_kana":"チヨダク","town":"千代田","town_kana":"チヨダ"}],"prefecture":"東京都","prefecture_kana":"トウキョウト","zip_code":"1000001"})
+      security:
+        - basic: []
+  /api/yubinbango/{zip}.js:
+    get:
+      summary: 住所取得(JS形式)
+      deprecated: false
+      description: |-
+        郵便番号をキーとして各住所項目の配列を返す
+        - 都道府県ID（1-47）
+        - 市区町村
+        - 地域
+        - 建物名等
+        - 市区町村（カナ）
+        - 地域（カナ）
+        - 建物名等（カナ）
+        - 事業所名
+        - 事業所名（カナ）
+      operationId: get-api-yubinbango-js
+      tags: []
+      parameters:
+        - name: zip
+          in: path
+          description: 取得したい郵便番号と拡張子を指定する
+          required: true
+          example: '1000001'
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: jsonp形式でレスポンスを受けるためのコールバック関数名
+          required: false
+          example: $yubin
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  '{zipCode}':
+                    type: array
+                    items:
+                      type: string
+                    description: 郵便番号
+                required:
+                  - '{zipCode}'
+      security:
+        - basic: []
+  /api/yubinbango/jsonp/{zip}.js:
+    get:
+      summary: '住所取得(JSONP[js]形式) '
+      deprecated: false
+      description: |-
+        $yubin({js形式})でレスポンスを返す
+        - 都道府県ID（1-47）
+        - 市区町村
+        - 地域
+        - 建物名等
+        - 市区町村（カナ）
+        - 地域（カナ）
+        - 建物名等（カナ）
+        - 事業所名
+        - 事業所名（カナ）
+      operationId: get-api-yubinbango-js
+      tags: []
+      parameters:
+        - name: zip
+          in: path
+          description: 取得したい郵便番号と拡張子を指定する
+          required: true
+          example: '1000001'
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties: {}
+              examples:
+                '1':
+                  summary: application/javascript
+                  value: >-
+                    $yubin({"1000001":[13,["千代田区"],["千代田"],[""],["チヨダク"],["チヨダ"],[""],[""],[""]]})
+      security:
+        - basic: []
+components:
+  schemas: {}
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+servers: []
